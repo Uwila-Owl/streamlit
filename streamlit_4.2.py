@@ -12,7 +12,7 @@ import streamlit as st
 import pandas as pd
 
 # Charge l'image
-image = Image.open(".\photo_lea.jpg")
+image = Image.open("photo_lea.jpg")
 
 # Obtiens les métadonnées EXIF
 exif_data = image._getexif()
