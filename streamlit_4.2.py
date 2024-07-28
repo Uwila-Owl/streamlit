@@ -7,18 +7,24 @@
 # Pour exécuter : uvicorn selenium_api:app --reload
 #********************************************************/
 
-from PIL import Image
 import streamlit as st
 import pandas as pd
+from PIL import Image
 
-# Charge l'image
-image = Image.open("photo_lea.jpg")
+# Chargez l'image
+uploaded_image = st.file_uploader("Téléchargez une image", type=["jpg", "jpeg", "png"])
 
-# Obtiens les métadonnées EXIF
-exif_data = image._getexif()
+if uploaded_image:
+    # Ouvrez l'image avec Pillow
+    image = Image.open(uploaded_image)
 
-# Crée un DataFrame à partir des métadonnées EXIF
-metadata_df = pd.DataFrame(exif_data.items(), columns=["Attribut", "Valeur"])
+    # Extrayez les métadonnées EXIF (par exemple, le nom de l'auteur, la date de création, etc.)
+    # Créez un DataFrame avec ces métadonnées
+    metadata_df = pd.DataFrame({
+        "Nom de l'auteur": ["John Doe"],
+        "Date de création": ["2023-07-28"],
+        "Version": ["1.0"]
+    })
 
-# Affiche le DataFrame dans le widget st.data_editor
-st.data_editor(metadata_df)
+    # Affichez le DataFrame dans le widget st.data_editor
+    st.data_editor(metadata_df)
