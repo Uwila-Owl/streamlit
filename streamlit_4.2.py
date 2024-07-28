@@ -11,20 +11,16 @@ import streamlit as st
 import pandas as pd
 from PIL import Image
 
-# Chargez l'image
-uploaded_image = st.file_uploader("Téléchargez une image", type=["jpg", "jpeg", "png"])
+# Charger l'image (remplacez 'votre_image.jpg' par le chemin de votre image)
+image_path = 'photo_lea.jpg'
+image = Image.open(image_path)
 
-if uploaded_image:
-    # Ouvrez l'image avec Pillow
-    image = Image.open(uploaded_image)
+# Extraire les métadonnées EXIF (par exemple, la date de création, l'appareil photo, etc.)
+exif_data = image._getexif()
 
-    # Extrayez les métadonnées EXIF (par exemple, le nom de l'auteur, la date de création, etc.)
-    # Créez un DataFrame avec ces métadonnées
-    metadata_df = pd.DataFrame({
-        "Nom de l'auteur": ["John Doe"],
-        "Date de création": ["2023-07-28"],
-        "Version": ["1.0"]
-    })
+# Créer un dataframe pandas avec les métadonnées
+df = pd.DataFrame(exif_data.items(), columns=['Attribut', 'Valeur'])
 
-    # Affichez le DataFrame dans le widget st.data_editor
-    st.data_editor(metadata_df)
+# Afficher le widget st.data_editor
+st.data_editor(df)
+
