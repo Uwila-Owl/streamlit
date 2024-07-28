@@ -1,10 +1,10 @@
 # *******************************************************
 # Nom ......... : Applications streamlit avec image
 # Auteur ...... : Léa MOULINNEUF
-# Version ..... : V0.1 du 11/05/2024
+# Version ..... : V0.1 du 27/07/2024
 # Licence ..... : réalisé dans le cadre du cours des Outils collaboratifs
 # Compilation : 
-# Pour exécuter : uvicorn selenium_api:app --reload
+# Pour exécuter : streamlit run streamlit_4.2.py
 #********************************************************/
 
 import streamlit as st
@@ -41,14 +41,14 @@ def main():
         new_copyright = st.text_input("Nouvelle valeur pour 'Copyright'", exif_dict["0th"][33432])
         new_xp_author = st.text_input("Nouvelle valeur pour 'XPAuthor'", "".join(chr(i) for i in exif_dict["0th"][40093] if i != 0))
 
-        # Mettre à jour les métadonnées
+        # Mise à jour de ces dernières
         exif_dict["0th"][271] = new_make
         exif_dict["0th"][272] = new_model
         exif_dict["0th"][315] = new_artist
         exif_dict["0th"][33432] = new_copyright
         exif_dict["0th"][40093] = tuple(ord(c) for c in new_xp_author) + (0,)
 
-        # Affichage des nouvelles valeurs
+        # Affichage des nouvelles valeurs afin de montrer la prise en compte
         st.subheader("Nouvelles valeurs des métadonnées :")
         for ifd in ("0th", "Exif", "GPS", "1st"):
             for tag in exif_dict[ifd]:
@@ -60,7 +60,7 @@ def main():
                     value = "".join(chr(i) for i in value if i != 0)
                 st.write(f"{tag_name}: {value}")
 
-        # Bouton d'enregistrement
+        # Bouton d'enregistrement de l'image
         if st.button("Enregistrer l'image"):
             exif_bytes = piexif.dump(exif_dict)
             image.save("image_modifiee.jpg", "jpeg", exif=exif_bytes)
